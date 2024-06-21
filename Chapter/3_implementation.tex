@@ -1,8 +1,56 @@
 \chapter{Methodology}
 \label{cha:789}
+This chapter is about how the implementation of predictive maintenance of legacy devices is done in this dissertation. The data collection part of the project was done during my internship ad Thinkin, a software house situated in Trento.
+\section{Problem Definition}
+The goal is to retrofit legacy equipment that is working today but does not have support for sensor data collection due to lack of sensors or inability to access data, and add some data analytics such as predictive maintenance.
+\section{Operational Framework}
+In order to implement predictive maintenance, it was determined that a framework should be employed whereby external sensors are installed on a device and monitor its inputs and outputs. This allows for the understanding of whether the device in question requires maintenance or not.\\
+	\begin{figure}[h!]
+    \centerline{\psfig{file=operational_framework.png, width=0.7 \textwidth}}
+  	\end{figure}
+  	\\So the framework can be generalised as follows:
+  	\[Remaining\ Useful\ Life\ =\ f(Input,\ Output, \overline{S}\ )\]
+  	The framework presented above allows for the observation of input and output as well as sensor data, in order to identify a function that can approximate the remaining useful life of the equipment in question.
+\section{Requirements}
+Given the intended real-world context of this project, which involves multiple users, each with multiple machines and sensors that transmit data at regular intervals, it is essential to implement a robust software architecture capable of handling high throughput and a vast volume of data without compromising data integrity or introducing errors. Furthermore, the objective was to develop an architecture that could be readily scaled horizontally, allowing for the project's growth to be managed effectively. 
+\subsection{Used Technology}
+This section introduces the software technologies utilised in the project to fulfil the requirements of the preceding section. The objective is to underscore the decision to employ professional technologies that are readily scalable on a large scale, achieve optimal performance and are reliable. Additionally, they possess the benefit of being all open source technologies.
+\subsubsection{MQTT}
+MQTT is a publish-subscribe network protocol that is widely utilised in the field of Internet of Things due to its minimalistic design. It is an open OASIS standard and an ISO recommendation.\\
+MQTT defines two actors in the network: a message broker, which receives all messages from clients and routes them to the appropriate destination clients; and clients, which are all devices that are connected to a message broker. The communications are structured into a hierarchical topic model, in which clients can publish or subscribe.\\
+MQTT is designed to operate on constrained bandwidth and reliably transmit messages, even across unstable or high-latency networks. The protocol's keep-alive feature and minimal header size make it an optimal choice for IoT since it could be implemented in devices with microcontrollers. The lightweight nature of MQTT enables it to connect a considerable number of clients simultaneously to the same message broker.\\
+\subsubsection{Kafka}
 
-\section{Software Architecture}
+\subsubsection{Timescale DB}
+Timescale is a time series database built on PostgreSQL, extending it with time-series optimisations. In comparison to PostgreSQL, Timescale offers a number of additional features, including automatic data partitioning, high ingest rates, and compression techniques optimised for time series data. The result is that queries on time series are thousands times faster in comparison with PostgreSQL. Due to the fact that timescale uses SQL with some additional function make it simpler to learn compared to other time series databases. Moreover, as an extension of PostgreSQL, it benefits from the reputation built up over twenty-five years of existence. This makes it an excellent choice, as it is a guarantee of a widely known, solid database management system. Furthermore, between versions, there are no radical changes that make the work already done inapplicable.
+\section{Software Architecture and Implementation}
+The software architecture designed to facilitate predictive maintenance of legacy machinery is structured with micro services to enable horizontal scalability and facilitate maintenance of the various software components.
+\\The following image depicts the software architecture in use. Rectangles represent developed services, ovals represent used services, and the cylinder represents the database.
+\begin{figure}[h!]
+    	\centerline{\psfig{file=architettura.png, width=1.1 \textwidth}}
+\end{figure}
+\\The data flow begins with MQTT, where data from all sensors registered in the system are published. From there, a micro service called "importer" is responsible for reading the data published on MQTT and publishing it to a topic on Kafka. The importer is a straightforward module that ensures optimal reliability and efficiency in data persistence. Subsequently, a micro-service designated as the "entity-manager" is responsible for database management and data storage from Kafka to Timescale. This service provides a suite of RESTful APIs that facilitate control over the entities stored in the database. In the system, data is divided into deployments, which represent the various clients. Deployments are divided into zones, which represent areas of a factory or locations. In the various zones, there are different assets, which represent machinery. Finally, each zone contains the various sensors installed. In the picture below you can see the ER schema of the database. It is intended to point out that the sensor-data and asset-status tables are Timescale hyper tables and are weak relationships, which means that the data are identified by the instant at which they were recorded and by the relationship they have to the other entity to which they are linked.
+	\begin{figure}[h!]
+    	\centerline{\psfig{file=schemaER.png, width=1.1 \textwidth}}
+  	\end{figure}
+ \\With the API, these entities can be created, deleted, and visualised. Additionally, for each asset, the status is saved in a dedicated table, representing any malfunctions encountered. Finally, a table containing the data of all sensors with a reference to the corresponding sensor is available. The "entity-manager" service is also responsible for reading data from Kafka and saving it to Timescale in such a way that it is saved persistently and efficiently. This is because complex queries can be made on Timescale and data compression is much more efficient. Furthermore, a service designated as the "query service" has been developed to facilitate the execution of queries on sensor data via RESTful APIs. This service aggregates the results into buckets of a size selected by the user. Additionally, an "event service" has been created to generate events on sensor data through the creation of RESTful API rules comprising mathematical formulas. The latter two services are beneficial for the generation of statistical data on the operation of a machine. Finally, with regard to predictive maintenance, a service called "prediction-service" has been created that, through an HTTP endpoint, provides the prediction of the remaining life of the machinery. This service takes care of making a query on Timescale to obtain the useful data of the requested machinery and then forwards it through an HTTP request to another service that, with the received data, makes the prediction. Finally, a service has been developed that collects sensors data in real time and posts them into web-sockets, thereby providing near real-time data for potential visualisations.
+\section{Predictive Maintenance Implementation}
+This section presents a detailed account of the implementation of predictive maintenance.
+\subsection{Types of Predictive Maintenance}
+\subsection{Machine Learning Models for Predictive Maintenance}
+\subsection{Long Short Term Memory Model}
+\subsection{LSTM Operationalisation}
 
-The software architecture for the predictive maintenance of legacy devices is designed to efficiently manage data collection, processing, storage, analysis and RUL prediction. This architecture is composed by four main components: data collection, data storing, data visualization and RUL prediction.
-Data collection is the component capable of listen to sensors data on a MQTT topic and push them to a Kafka topic. The goal of this component is to give a stardard input point with  
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -1,9 +1,71 @@
-\chapter{State of the art}
+\chapter{Background}
 \label{cha:intro}
-\section{Industrial IOT}
+
 \section{Industry 4.0}
-\subsection{Timeseries Data}
-\subsection{Timeseries Database}
+The Fourth Industrial Revolution, or Industry 4.0, denotes a new stage in the industrial sector defined by the introduction of digital technologies into manufacturing processes. It represent a change from conventional industrial and production methods to a completely digitalised, networked industry. Industry 4.0 is applied thanks to some key technologies such as: industrial internet of things (IIOT), big data, cloud computing, cyber physical systems, advanced robotics, machine learning and augmented reality.
+\subsection{Industrial Internet Of Things}
+IIOT represents a transformation in manufacturing and industry, enabling connections between machinery, control systems and operators. This network facilitates real-time data collection and analysis, improves the efficiency of manufacturing processes, reduces downtime, and collects data for predictive maintenance. In addition, IIOT enables better adaptation to market changes through a scalable and flexible infrastructure and can improve the efficiency of stock management to make the delivery of new products faster thanks to a network of small but distributed interconnected warehouses.
+\subsubsection{Key difference between IIOT and IOT}
+The Industrial Internet Of Things (IIOT) is a subgroup of IOT, which means that they share the same concept of interconnectivity and interaction between devices, but differ in their goals, scales, and operational requirements. IOT is generally oriented toward customers; therefore, it usually includes smart home appliances, wearable and home security devices, and every other accessory focused on the improvement of daily life. IIOT is highly specialised in manufacturing, where reliability, security, and scalability are critical. In addition, the IIOT is designed to work under extreme conditions and ensure business continuity without interruption.
+\subsection{Big Data}
+The collecting and handling of data flows that are more complicated than normal data in terms of volume, velocity, and diversity is referred to as big data. Big data management becomes essential in the context of Industry 4.0, as the number of linked devices and sensors rises. Imagine a large factory with numerous pieces of machinery and sensors that send data every few seconds to each other. Furthermore, reliability is a need in a professional setting to prevent data loss that could taint analytics.\\
+Sensor telemetry data is time-indexed in order to be utilised for analytics so time series data is the specific data type designed to manage time-indexed data. Time series data cannot be stored in a standard database, instead, they need appropriate database.
+\subsubsection{Time Series Database}
+Time series database (TSDB) are designed to handle high ingestion rates without losing any data, they offer time stamp-based indexes that are more effective at managing time series data than standard databases, which have more generalised structures and indexing techniques.\\
+The main differences between standard database and time-series database are:
+\begin{itemize}
+	\item Query optimisation
+		\begin{description}
+			\item TSDB are designed to handle large volumes of data with specialised indexing and query capabilities like time aggregation and down-sampling in the other hand standard database offer general porpoise query language that are less efficient with time series.
+		\end{description}
+	\item Write and Read Performance
+		\begin{description}
+			\item TSDB are optimised for high throughput and rapid access to time-based data that make them suitable for continuous data inflow. Standard database offer balanced read and write performance for diverse use cases.
+		\end{description}
+	\item Data Retention
+		\begin{description}
+			\item While typical databases do not have retention policies and require the user to build them on his own, TSDB frequently contains features for down sampling, efficient storing of big historical datasets, and automatically summarising data based on age.
+		\end{description}
+	\item Data Compression
+		\begin{description}
+			\item TSDB reduces storage footprint and improves retrieval speeds by utilising sophisticated compression techniques designed specifically for time-series data. Standard database uses generic compression techniques that may result in higher storage needs for extensive historical data since they are not especially tailored for time-series data.
+		\end{description}
+	\item Scalability
+		\begin{description}
+			\item Due to the growth of the volumes of the data TSDB are design to scale horizontally with distributed architecture while traditional databases encounter certain challenges when attempting to do the same because they are designed to scale vertically.
+		\end{description}
+\end{itemize}
 \section{Industry 5.0}
-\subsection{Retrofitting legacy devices}
-\subsection{Predictive maintenance}
+Since industry 5.0 goes beyond efficiency and productivity as the only goals in the economic and social transformations we are living through, it is a relatively new idea that the European Union has utilised on multiple occasions. While industry 4.0 focuses on economic and production improvement industry 5.0 focuses on social value and well-being. One of the key concepts of this new industrial revolution is that the industry must be sustainable in order to respect planetary boundaries. It must create circular processes that minimise waste and their negative effects on the environment while recycling, repurposing, and reusing natural resources. Reducing energy use and greenhouse gas emissions is what is meant by sustainability, which aims to prevent the depletion and destruction of natural resources. By maximising resource efficiency, waste reduction, and energy efficiency and consumption, technologies like artificial intelligence and additive manufacturing can play a significant part in this. Waste could be reduced with the retrofitting of legacy devices and the adoption of the predictive maintenance.
+\subsection{Retrofitting of Legacy Devices}
+Retrofitting is the process of equipping machinery with new or enhanced IIoT functions, like predictive maintenance, always-on monitoring, or data analytics. Because of this procedure, manufacturers could avoid purchasing new devices, reducing waste connected to discarding functional legacy ones. Additionally, prolonging the life of current machinery lowers the cost of adopting new machinery, which includes some associated costs related to the device's lifetime, such as the purchase price, staff training costs, and termination fees. 
+\subsection{Maintenance}
+Maintenance is defined in the UNI EN 13306:2018 standard as:
+\\\\\
+	\emph{``The combination of all technical, administrative and management actions, during the life cycle of an entity, intended to maintain or restore it to a state where it can perform the required function"}
+\\\\
+From basic techniques used when machinery has a blocking failure to a complex strategy strongly integrated with other production processes playing a crucial strategic role, the concept of maintenance has changed over time to meet the changing demands of the industrial sector.\\
+Maintenance strategy could be subdivided into three groups, corrective maintenance, cyclic maintenance and preventive maintenance.
+\subsubsection{Corrective Maintenance}
+Corrective maintenance is conducted after the identification of a fault. This approach is the simplest and least strategic when a failure has already occurred, as it entails a lengthy period of machinery downtime until repairs or replacement are completed. \textbf{This prolonged downtime results in significant financial and energy losses due to the halt of production. Additionally, the implementation of corrective maintenance may compromise machine safety, as it may lead to dangerous failures that could harm employees.  Another disadvantage of corrective maintenance is that the potential for resource waste increases, as there is a risk of creating incomplete or broken products.}
+\subsubsection{Cyclic Maintenance}
+In cyclic maintenance, regardless of the current operational status of the equipment, maintenance tasks are carried out at predefined intervals. This approach is advantageous in that the tasks are prearranged and standard methods are followed for inspection, cleaning, lubrication, and component replacements. \textbf{However, the potential for excessive maintenance exists, which could result in a time and resource waste. This indicates a non-sustainable approach and financial waste. Cyclic maintenance does not consider the condition of the machinery, which may result in the maintenance period becoming excessively long over time. This can lead to unexpected errors and the need for corrective maintenance.}
+\subsubsection{Predictive Maintenance}
+\textbf{Predictive maintenance is an anticipatory approach that employs tools and methods for data analysis to predict potential irregularities in equipment performance. This enables the implementation of maintenance procedures prior to an equipment breakdown.
+The data is processed using machine learning algorithms, which identify patterns and anomalies suggestive of possible breakdowns. Predictive models identify the optimal time for maintenance and predict future equipment failures based on historical data. Predictive maintenance has several advantages, including decreased downtime, lower costs, longer equipment life, enhanced efficiency, safety, and data-driven decision-making. Predictive maintenance offers more dependable and economical operations than traditional maintenance methods by utilizing technology and data analytics.}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
