@@ -36,9 +36,8 @@ The software architecture designed to facilitate predictive maintenance of legac
  \\With the API, these entities can be created, deleted, and visualised. Additionally, for each asset, the status is saved in a dedicated table, representing any malfunctions encountered. Finally, a table containing the data of all sensors with a reference to the corresponding sensor is available. The "entity-manager" service is also responsible for reading data from Kafka and saving it to Timescale in such a way that it is saved persistently and efficiently. This is because complex queries can be made on Timescale and data compression is much more efficient. Furthermore, a service designated as the "query service" has been developed to facilitate the execution of queries on sensor data via RESTful APIs. This service aggregates the results into buckets of a size selected by the user. Additionally, an "event service" has been created to generate events on sensor data through the creation of RESTful API rules comprising mathematical formulas. The latter two services are beneficial for the generation of statistical data on the operation of a machine. Finally, with regard to predictive maintenance, a service called "prediction-service" has been created that, through an HTTP endpoint, provides the prediction of the remaining life of the machinery. This service takes care of making a query on Timescale to obtain the useful data of the requested machinery and then forwards it through an HTTP request to another service that, with the received data, makes the prediction. Finally, a service has been developed that collects sensors data in real time and posts them into web-sockets, thereby providing near real-time data for potential visualisations.
 \section{Predictive Maintenance Implementation}
 This section presents a detailed account of the implementation of predictive maintenance.
-\subsection{Types of Predictive Maintenance}
-\subsection{Machine Learning Models for Predictive Maintenance}
 \subsection{Long Short Term Memory Model}
+
 \subsection{LSTM Operationalisation}
 
 
