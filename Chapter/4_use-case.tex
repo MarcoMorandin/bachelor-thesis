@@ -57,9 +57,28 @@ The scaled values are obtained with the following formula:
 \[X_{scaled} = \frac{X - X_{min}}{X_{max} - X_{min}}\]
 Where X is the value that has to be scaled, $X_{min}$ is the smallest value in the dataset and $X_{max}$ is the biggest value in the dataset.
 \subsection{Dataset Splitting}
-\subsection{Model composition}
+The k-fold cross-validation technique was selected for training the model. The rationale behind this choice is to prevent overfitting, which occurs when a model performs well on training data but struggles with new data. The k-fold technique involves dividing the dataset into k subsets and selecting one subset for validation while the others are used for training. This process is repeated k times, with each iteration involving a different subset chosen for validation. Finally, the results of each step are averaged in order to obtain an accurate performance estimate. In this case, the "TimeSeriesSplit" object from the "scikit-learn" library was utilized to perform the split. This object enables the implementation of cross-validation, in contrast to the conventional k-fold approach, wherein the data is mixed and then split into subsets. In the case of the timeseries split, the data is split while maintaining the temporal order. The dataset is divided into consecutive subsets, with each iteration utilising data that has already been employed for training and data that is new to the model, which is then used for testing. This process is analogous to the real-world operation of training a model on historical data and then testing it on future data.
+\begin{figure}[h!]
+    	\centerline{\psfig{file=timeseriessplit.png, width=0.8 \textwidth}}
+\end{figure}
+\subsection{Model structure}
 
 
+
+The model comprises multiple layers, each with a distinct function. To achieve this, a sequential model from the Keras library was employed, which enables the construction of machine learning models comprising various layers. The layers utilized are as follows:
+\begin{itemize}
+
+	\item Input: This layer instructs the model regarding the size of the dataset to be passed for training.
+	\item LSTM: This layer will undergo training with the LSTM model.
+	\item Dropout: The dropout layer randomly sets input units to 0 with a frequency of rate at each step during training time, which helps prevent overfitting. In this case, after some trials, the chosen drop rate is 0.2.
+	\item LSTM: another layer with the pattern, using two layers gives better performance in recognizing complex patterns by increasing the generalisation capabilities of the pattern. However, the problem is that having two layers makes training computationally more intensive.
+	\item Dropout
+	\item Batch Normalization: This process normalizes the activation of each layer by subtracting the mean and dividing by the standard deviation. It improves the training speed and helps to prevent overfitting. 
+	\item Dense: this layer applies the following operation
+				\[output = activation(input \cdot kernel) + bias\]
+				where activation is the activation function passed as parameters, in this case "linear", kernel is a weights matrix created by the layer and bias is a vector created by the layer. It is the layer that effectively gives us an output.
+\end{itemize}
+Furthermore, a callback was incorporated into the model via the "EarlyStopping" object, which enables the training process to be terminated when the observed metric fails to demonstrate a continued increase. In this instance, the observed metric is the training loss, which serves to prevent overfitting. Finally, the training was conducted with a batch size of 64 and 200 epochs, resulting in a total of five repetitions of the training process, or the number of subsets created with the TimeSeriesSplit. The values in question were selected following an exhaustive series of tests designed to identify the optimal parameters, given that there is no established formula for defining them in advance.
 
 
 
